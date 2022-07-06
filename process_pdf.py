@@ -1,7 +1,7 @@
 import PyPDF2
+import string
 import nltk
 from nltk.tokenize import RegexpTokenizer
-
 
 def scan(path):
     # first we open the path in the function
@@ -15,22 +15,17 @@ def scan(path):
     # close the file
     file.close()
 
-
 def tokenise(path):
     # Scan the document
     doc = scan(path)
-    # create tokens using word_tokenize
-    tokens = nltk.word_tokenize(doc)
-    # return the tokens
-    return tokens
 
-
-def tokeniseReg(path):
-    # Scan the document
-    doc = scan(path)
+    # characters to be excluded in tokenizer
+    x=r'["\n"\!\"\#\$\%\&\'\(\)\*\,\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\•\"/"\:\,\?!"]\s*'
     # create tokenizer
-    tokenizer = RegexpTokenizer(r'["\n"\" "\•\:\,\?!"]\s*', gaps=True)
+    tokenizer = RegexpTokenizer(x, gaps=True)
+
     # create tokens using RegexpTokenizer
     tokens = tokenizer.tokenize(doc)
+
     # return the tokens
     return tokens
