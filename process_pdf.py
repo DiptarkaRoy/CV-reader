@@ -20,6 +20,8 @@ def scan(path):
 def tokenise(path):
     # Scan the document
     doc = scan(path)
+
+    ##Tokeniser
     # characters to be excluded in tokenizer
     x = r'["\n"\!\"\#\$\%\&\'\(\)\*\,\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\•\"/"\:\,\?!"]\s*'
     # create tokenizer
