@@ -3,6 +3,7 @@ import string
 import nltk
 from nltk.tokenize import RegexpTokenizer
 
+# This function scans the pdf and converts it to lowercase and returns it
 def scan(path):
     # first we open the path in the function
     file = open(path, 'rb')
@@ -10,17 +11,17 @@ def scan(path):
     pdf = PyPDF2.PdfFileReader(file)
     # load the page
     page = pdf.getPage(0)
-    # return the page
-    return page.extractText()
+    # convert the content to lowercase and return the page
+    return page.extractText().lower()
     # close the file
     file.close()
 
+# This function tokenizes the contents of a file while removing punctuation and other special characters
 def tokenise(path):
     # Scan the document
     doc = scan(path)
-
     # characters to be excluded in tokenizer
-    x=r'["\n"\!\"\#\$\%\&\'\(\)\*\,\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\•\"/"\:\,\?!"]\s*'
+    x = r'["\n"\!\"\#\$\%\&\'\(\)\*\,\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\•\"/"\:\,\?!"]\s*'
     # create tokenizer
     tokenizer = RegexpTokenizer(x, gaps=True)
 
