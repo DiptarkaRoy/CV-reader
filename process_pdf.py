@@ -1,6 +1,6 @@
 import PyPDF2
-import string
 import nltk
+from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 
 # This function scans the pdf and converts it to lowercase and returns it
@@ -31,4 +31,17 @@ def tokenise(path):
     tokens = tokenizer.tokenize(doc)
 
     # return the tokens
+    return tokens
+
+# This function removes stopwords with NLTK
+def removeStopWords(tokens):
+    # initialise the stopwords as a set
+    stop_words = set(stopwords.words('english'))
+
+    # Iterate through tokens and remove if the tokens are stopwords
+    for w in tokens:
+        if w in stop_words:
+            tokens.remove(w)
+
+    # return tokens
     return tokens
