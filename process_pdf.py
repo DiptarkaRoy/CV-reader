@@ -10,7 +10,6 @@ import os
 # This function finds the top words for creating keywords. Accepts a value n
 def top_keywords(common_words, n):
     top_words = [w[0] for w in common_words.most_common(n)]
-    print(top_words)
     return top_words
 
 
