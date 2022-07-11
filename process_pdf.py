@@ -4,6 +4,29 @@ from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from autocorrect import Speller
+import os
+
+
+# This function finds the top words for creating keywords. Accepts a value n
+def top_keywords(common_words, n):
+    top_words = [w[0] for w in common_words.most_common(n)]
+    print(top_words)
+    return top_words
+
+
+# This function finds the map of words
+def map_all(folder):
+    files = os.listdir(folder)  # getting filenames
+    common_words = nltk.probability.FreqDist()  # this contains the repetitive words from the set
+    # Performing the operation for each file
+    for file in files:
+        # Entering path
+        path = folder + '/' + file
+        # Cleaning Pdf
+        tokens = clean_pdf(path)
+        # Mapping common words
+        map(tokens, common_words)
+    return common_words
 
 
 # this function cleans the text after importing it
@@ -77,6 +100,7 @@ def spell_check(tokens):
     spell = Speller('en')
     tokens = [spell(words) for words in tokens]
     return tokens
+
 
 # This function maps finds the frequency of words found in the tokens
 def map(tokens, common_words):
