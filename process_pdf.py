@@ -1,4 +1,5 @@
 import PyPDF2
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
@@ -11,11 +12,9 @@ def clean_pdf(path):
     doc = scan(path)
     # create tokens
     tokens = spell_check(lemmatize_and_stem(removeStopWords(tokenise(doc))))
-    # output
-    print(tokens)
-    # mapping the words in the tokens
-    mapped=count_words(tokens)
-    print(mapped)
+    # return
+    return (tokens)
+
 
 # This function scans the pdf and converts it to lowercase and returns it
 def scan(path):
@@ -79,12 +78,6 @@ def spell_check(tokens):
     tokens = [spell(words) for words in tokens]
     return tokens
 
-
-def count_words(tokens):
-    counts = dict()
-    for word in tokens:
-        if word in counts:
-            counts[word] += 1
-        else:
-            counts[word] = 1
-    return counts
+# This function maps finds the frequency of words found in the tokens
+def map(tokens, common_words):
+    common_words += nltk.FreqDist(w for w in tokens)
