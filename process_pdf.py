@@ -1,5 +1,5 @@
 import PyPDF2
-from nltk.corpus import stopwords, words
+from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from autocorrect import Speller
@@ -7,15 +7,15 @@ from autocorrect import Speller
 
 # this function cleans the text after importing it
 def clean_pdf(path):
-    #scanning the file
+    # scanning the file
     doc = scan(path)
-    #create tokens
+    # create tokens
     tokens = spell_check(lemmatize_and_stem(removeStopWords(tokenise(doc))))
-    # removing duplicate tokens
-    tokens=list(set(tokens))
-    #output
+    # output
     print(tokens)
     # return tokens
+    mapped=count_words(tokens)
+    print(mapped)
 
 # This function scans the pdf and converts it to lowercase and returns it
 def scan(path):
@@ -29,6 +29,7 @@ def scan(path):
     return page.extractText().lower()
     # close the file
     file.close()
+
 
 # This function tokenizes the contents of a file while removing punctuation, special characters...
 # ...and numbers
@@ -72,8 +73,18 @@ def lemmatize_and_stem(tokens):
     return tokens
 
 
-# This function autocorrects the spelling of words spelt wrongly
+# This function corrects the spelling of words spelt wrongly
 def spell_check(tokens):
     spell = Speller('en')
     tokens = [spell(words) for words in tokens]
     return tokens
+
+
+def count_words(tokens):
+    counts = dict()
+    for word in tokens:
+        if word in counts:
+            counts[word] += 1
+        else:
+            counts[word] = 1
+    return counts
