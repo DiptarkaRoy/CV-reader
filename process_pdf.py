@@ -13,7 +13,7 @@ def clean_pdf(path):
     tokens = spell_check(lemmatize_and_stem(removeStopWords(tokenise(doc))))
     # output
     print(tokens)
-    # return tokens
+    # mapping the words in the tokens
     mapped=count_words(tokens)
     print(mapped)
 
@@ -36,7 +36,7 @@ def scan(path):
 def tokenise(doc):
     ##Tokeniser
     # Characters to be excluded in tokenizer (including numbers)
-    x = r'["\n"\!\"\#\$\%\&\'\(\)\*\,\d+\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\●\○\•\"/"\:\,\?!"]\s*'
+    x = r'["\n"\!\"\#\$\%\&\'\(\)\*\,\d+\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\■\●\○\•\"/"\:\,\?!"]\s*'
     # create tokenizer
     tokenizer = RegexpTokenizer(x, gaps=True)
 
