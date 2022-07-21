@@ -1,9 +1,10 @@
 import PyPDF2
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import RegexpTokenizer
+from nltk.tokenize import RegexpTokenizer, word_tokenize
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from autocorrect import Speller
+from string import punctuation
 import os
 
 
@@ -23,7 +24,6 @@ def map_all(folder):
         # Entering path
         path = folder + '/' + file
         # Cleaning Pdf
-        print(path)
         tokens = clean_pdf(path)
         print(tokens)
         # Mapping common words
@@ -36,7 +36,7 @@ def clean_pdf(path):
     # scanning the file
     doc = scan(path)
     # create tokens
-    tokens = spell_check(lemmatize_and_stem(removeStopWords(tokenise(doc))))
+    tokens = spell_check(lemmatize_and_stem(remove_special_characters(remove_punctuation(remove_stopwords(tokenise_word(doc))))),check=False)
     # return
     return (tokens)
 
@@ -71,18 +71,45 @@ def tokenise(doc):
     tokens = tokenizer.tokenize(doc)
 
     # return the tokens
+    return list(set(tokens))
+
+
+def tokenise_word(doc):
+    ## Word Tokeniser
+    # Characters to be excluded in tokenizer (including numbers)
+    x = r'["\n"\!\"\#\$\%\&\'\(\)\*\,\d+\.\/\:\;\-\<\=\>\?\[\\\]\^\_\`\{\|\}\~\" "\■\●\○\•\"/"\:\,\?!"]\s*'
+    # create tokenizer
+    tokens = word_tokenize(doc)
+    # return the tokens
     return tokens
 
 
 # This function removes stopwords with NLTK
-def removeStopWords(tokens):
+def remove_stopwords(tokens):
     # initialise the stopwords as a set
-    stop_words = set(stopwords.words('english'))
+    stoplist = set(stopwords.words('english'))
     # Iterate through tokens and remove if the tokens are stopwords
     for w in tokens:
-        if w in stop_words:
+        if w in stoplist or type(w) == int or len(w) < 2:
             tokens.remove(w)
     # return tokens
+    return tokens
+
+
+# This function removes punctuation
+def remove_punctuation(tokens):
+    # initialise the punctuations as a set
+    stoplist = set(list(punctuation))
+    # Iterate through tokens and remove if the tokens are punctuations
+    for w in tokens:
+        if w in stoplist or len(w) < 2:
+            tokens.remove(w)
+    return tokens
+
+
+# This function removes special characters
+def remove_special_characters(tokens):
+
     return tokens
 
 
@@ -101,9 +128,10 @@ def lemmatize_and_stem(tokens):
 
 
 # This function corrects the spelling of words spelt wrongly
-def spell_check(tokens):
+def spell_check(tokens,check=False):
     spell = Speller('en')
-    tokens = [spell(words) for words in tokens]
+    if check is True:
+        tokens = [spell(words) for words in tokens]
     return tokens
 
 
