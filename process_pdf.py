@@ -16,19 +16,22 @@ def top_keywords(common_words, n):
 # This function finds the map of words
 def map_all(folder):
     files = os.listdir(folder)  # getting filenames
+    # print(files)
     common_words = nltk.probability.FreqDist()  # this contains the repetitive words from the set
     # Performing the operation for each file
     for file in files:
         # Entering path
         path = folder + '/' + file
         # Cleaning Pdf
+        print(path)
         tokens = clean_pdf(path)
+        print(tokens)
         # Mapping common words
         map(tokens, common_words)
     return common_words
 
 
-# this function cleans the text after importing it
+# this function cleans the text after importing and tokenizing it
 def clean_pdf(path):
     # scanning the file
     doc = scan(path)
@@ -43,13 +46,16 @@ def scan(path):
     # first we open the path in the function
     file = open(path, 'rb')
     # read the file using 'PyPDF2'
-    pdf = PyPDF2.PdfFileReader(file)
+    pdf = PyPDF2.PdfFileReader(file, strict=False)
     # load the page
     page = pdf.getPage(0)
+
     # convert the content to lowercase and return the page
-    return page.extractText().lower()
+    Page = page.extract_text().lower()
     # close the file
     file.close()
+    # return the page
+    return Page
 
 
 # This function tokenizes the contents of a file while removing punctuation, special characters...
